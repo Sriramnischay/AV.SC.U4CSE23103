@@ -7,11 +7,14 @@ import {
   CardContent,
   Grid,
   Chip,
+  Button,
+  Stack,
 } from "@mui/material";
 
 function App() {
   const [notifications, setNotifications] = useState([]);
   const [priorityNotifications, setPriorityNotifications] = useState([]);
+  const [selectedType, setSelectedType] = useState("All");
 
   useEffect(() => {
     fetchNotifications();
@@ -29,6 +32,13 @@ function App() {
         return 0;
     }
   };
+
+  const filteredNotifications =
+    selectedType === "All"
+      ? notifications
+      : notifications.filter(
+          (item) => item.Type === selectedType
+        );
 
   const fetchNotifications = async () => {
     try {
@@ -94,8 +104,38 @@ function App() {
         All Notifications
       </Typography>
 
+      <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+        <Button
+          variant="contained"
+          onClick={() => setSelectedType("All")}
+        >
+          All
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={() => setSelectedType("Placement")}
+        >
+          Placement
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={() => setSelectedType("Result")}
+        >
+          Result
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={() => setSelectedType("Event")}
+        >
+          Event
+        </Button>
+      </Stack>
+
       <Grid container spacing={2}>
-        {notifications.map((item) => (
+        {filteredNotifications.map((item) => (
           <Grid item xs={12} md={6} lg={4} key={item.ID}>
             <Card>
               <CardContent>
