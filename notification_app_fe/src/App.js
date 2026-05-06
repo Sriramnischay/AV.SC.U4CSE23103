@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Log } from "../../logging middleware/logger";
 
 import {
   Container,
@@ -23,6 +24,14 @@ function App() {
 
   useEffect(() => {
     fetchNotifications();
+
+    Log(
+      "frontend",
+      "info",
+      "component",
+      "Notifications component loaded",
+      "PASTE_YOUR_ACCESS_TOKEN"
+    );
   }, []);
 
   const getPriority = (type) => {
