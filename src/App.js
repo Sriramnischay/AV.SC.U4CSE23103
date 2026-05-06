@@ -15,6 +15,7 @@ function App() {
   const [notifications, setNotifications] = useState([]);
   const [priorityNotifications, setPriorityNotifications] = useState([]);
   const [selectedType, setSelectedType] = useState("All");
+  const [readNotifications, setReadNotifications] = useState([]);
 
   useEffect(() => {
     fetchNotifications();
@@ -39,6 +40,12 @@ function App() {
       : notifications.filter(
           (item) => item.Type === selectedType
         );
+
+  const markAsRead = (id) => {
+    if (!readNotifications.includes(id)) {
+      setReadNotifications([...readNotifications, id]);
+    }
+  };
 
   const fetchNotifications = async () => {
     try {
@@ -137,11 +144,26 @@ function App() {
       <Grid container spacing={2}>
         {filteredNotifications.map((item) => (
           <Grid item xs={12} md={6} lg={4} key={item.ID}>
-            <Card>
+            <Card
+              onClick={() => markAsRead(item.ID)}
+              sx={{
+                cursor: "pointer",
+                backgroundColor: readNotifications.includes(item.ID)
+                  ? "#f0f0f0"
+                  : "#ffffff",
+              }}
+            >
               <CardContent>
                 <Chip label={item.Type} sx={{ mb: 2 }} />
 
-                <Typography variant="h6">
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: readNotifications.includes(item.ID)
+                      ? "normal"
+                      : "bold",
+                  }}
+                >
                   {item.Message}
                 </Typography>
 
